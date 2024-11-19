@@ -1,0 +1,33 @@
+package gm.empleados.controllers;
+
+import gm.empleados.model.Empleado;
+import gm.empleados.services.EmpleadoServicio;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
+
+@Controller
+public class IndexController {
+
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    @Autowired
+    EmpleadoServicio empleadoServicio;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String inciar(ModelMap modelo){
+        List<Empleado> empleados = empleadoServicio.getEmpleados();
+        empleados.forEach(empleado -> {
+            logger.info(empleado.toString());
+        });
+        //Compartimos el modelo con la vista
+        modelo.put("empleados",empleados);
+        return "index";
+    }
+
+}
